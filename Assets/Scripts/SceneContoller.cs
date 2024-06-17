@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
+
 [RequireComponent(typeof(ARPlaneManager))]
 public class SceneContoller : MonoBehaviour
 {
@@ -46,9 +47,16 @@ public class SceneContoller : MonoBehaviour
         _activateAction.action.performed += OnActivateAction;
         _toggleDebugAction.action.performed += OnToggleDebugAction; // Подписка на действие переключения дебага
     }
+    public static SceneContoller Instance;   
+    void Awake() 
+    {       
+        Instance = this;
+       
+    }
 
     void OnDestroy()
     {
+        Instance = null;
         Debug.Log("-> SceneController::OnDestroy()");
         _togglePlanesAction.action.performed -= OnTogglePlanesAction;
         _planeManager.planesChanged -= OnPlanesChanged;
@@ -71,7 +79,7 @@ public class SceneContoller : MonoBehaviour
     }
 
     
-    private void SpawnEchoBook()
+    public void SpawnEchoBook()
     {
         // Check if an EchoBook has already been spawned
         if (_currentEchoBookInstance != null)
